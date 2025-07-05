@@ -3,6 +3,9 @@
 
 #include "../../Negocios/include/WebCrawler.h"
 #include <string>
+#include <iostream>
+#include <limits>
+#include <regex>
 
 class ConsolaUi
 {
@@ -19,12 +22,15 @@ private:
     WebCrawler *crawler;
 
     /* Métodos privados */
+    bool UrlValida(std::string url);
     void MostrarMenu();
     void LeerEntrada();
     void UrlyProfundidad();
     void MostrarEstadisticas();
     void BuscarPalabraClave();
     void ExportarArbol();
+    void limpiarConsola();
+    void pausarConsola();
 };
 
 #endif // CONSOLA_UI_H
