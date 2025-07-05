@@ -21,7 +21,7 @@ std::vector<std::string> Html_parser::extraerLinks(std::string html, std::string
         {
             if (baseUrl.back() != '/')
                 baseUrl += '/';
-            if (link.front() == '/')
+            if (!link.empty() && link.front() == '/')
                 link = link.substr(1);
             link = baseUrl + link;
         }
