@@ -16,10 +16,15 @@
 El programa es un Web Crawler que explora recursivamente sitios web desde una URL inicial hasta una profundidad especificada. Su función principal es:
 
 1-Rastrear enlaces en páginas web.
+
 2-Clasificar enlaces como internos/externos.
+
 3-Detectar enlaces rotos.
+
 4-Generar estadísticas (total de enlaces, profundidad máxima, etc.).
+
 5-Buscar palabras clave en el contenido.
+
 6-Exportar resultados en formato de árbol.
 
 ---
