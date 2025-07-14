@@ -38,10 +38,12 @@ El programa es un Web Crawler que explora recursivamente sitios web desde una UR
 ## Funcionamiento de la Interfaz de Consola
 
 **Inicio:**
+
 Solicita URL inicial y profundidad máxima.
 Valida la URL con regex.
 
 **Menú Principal:**
+
 ==================  Menu princial  ==================  
 1.- Mostrar estadísticas.  
 2.- Buscar palabra clave.  
@@ -49,6 +51,7 @@ Valida la URL con regex.
 4.- Salir.  
 
 **Opciones:**
+
 Estadísticas: Muestra total de enlaces, internos/externos y profundidad máxima.
 Buscar palabra: Retorna profundidad donde se encontró la palabra (o -1 si no existe).
 Exportar: Guarda el árbol en Busqueda.txt.
