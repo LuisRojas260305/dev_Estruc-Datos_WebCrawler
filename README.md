@@ -61,7 +61,7 @@ Estadísticas: Muestra total de enlaces, internos/externos y profundidad máxima
 Buscar palabra: Retorna profundidad donde se encontró la palabra (o -1 si no existe).
 Exportar: Guarda el árbol en Busqueda.txt.
 
-##Tablas de Clases
+## Tablas de Clases
 ```mermaid
 classDiagram
     class NodoArbol {
@@ -143,7 +143,7 @@ classDiagram
     }
 ```
 
-##Diagrama de clases
+## Diagrama de clases
 
 ```mermaid
     classDiagram
