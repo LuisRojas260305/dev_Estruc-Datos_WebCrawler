@@ -149,98 +149,131 @@ classDiagram
 
 ```mermaid
     classDiagram
-    class TreeNode {
-        -string url
-        -int depth
-        -bool isExternal
-        -bool isBroken
-        -string content
-        -vector<TreeNode*> children
-        +TreeNode(string url, int depth)
-        +~TreeNode()
-        +void addChild(TreeNode* child)
-        +string getUrl()
-        +int getDepth()
-        +bool getIsExternal()
-        +void setIsExternal(bool external)
-        +bool getIsBroken()
-        +void setIsBroken(bool broken)
-        +string getContent()
-        +void setContent(string content)
-        +vector<TreeNode*> getChildren()
+    class Http_client {
+        +dowladUrl(string url) string
     }
 
-    class HashTable {
-        -int size
-        -vector<list<string>> table
-        -int hashFunction(string key)
-        +HashTable(int size = 1000)
-        +void insert(string key)
-        +bool contains(string key)
-        +void remove(string key)
+    class Html_parser {
+        +extraerLinks(string html, string url) vector~string~
+    }
+
+    class NodoArbol {
+        -string Url
+        -int Profundidad
+        -bool isExternal
+        -bool isBroken
+        -string contenido
+        -vector~NodoArbol*~ Hijos
+        +NodoArbol(string, int)
+        +insertar(NodoArbol*)
+        // ... getters y setters
+    }
+
+    class TablaHash {
+        -vector~list~string~~ tabla
+        -int Tamaño
+        +insertar(string)
+        +existe(string) bool
+        -hashFunction(string) int
     }
 
     class WebCrawler {
-        -TreeNode* root
-        -int maxDepth
-        -string domain
-        -HashTable visitedUrls
-        -vector<string> extractLinks(string html, string baseUrl)
-        -string downloadUrl(string url)
-        +WebCrawler(string rootUrl, int maxDepth)
-        +~WebCrawler()
-        +void crawl()
-        +Stats getStats()
-        +int findKeyword(string keyword)
-        +vector<string> getBrokenLinks()
-        +void exportTree(string filename)
-        -TreeNode* crawlRecursive(TreeNode* node, int currentDepth)
+        -NodoArbol* raiz
+        -int Profundidad
+        -string url
+        -TablaHash urlVisitada
+        +WebCrawler(string, int)
+        +Explorar()
+        +getStats() Estadisticas
+        +PalabraClave(string) int
+        +getBrokenLinks() vector~string~
+        +exportTree(string)
+        -ExploracionRecursiva(NodoArbol*, int) NodoArbol*
+        -descargarUrl(string) string
+        +getDominio(string) string
     }
 
-    class Stats {
-        -int totalLinks
-        -int internalLinks
-        -int externalLinks
-        -int maxDepth
-        +Stats()
-        +void incrementTotal()
-        +void incrementInternal()
-        +void incrementExternal()
-        +void setMaxDepth(int depth)
-        +int getTotalLinks()
-        +int getInternalLinks()
-        +int getExternalLinks()
-        +int getMaxDepth()
+    class Estadisticas {
+        -int LinksTotales
+        -int LinksInternos
+        -int LinksExternos
+        -int ProfundidadMax
+        +Estadisticas()
+        +IncrementarTotal()
+        +IncrementarInternos()
+        +IncrementarExternos()
+        +setProfundidadMax(int)
+        // ... getters
     }
 
-    class FileExporter {
-        +static void exportToFile(TreeNode* root, string filename)
+    class ExportarArchivo {
+        +exportar(NodoArbol*, string)
     }
 
-    class ConsoleUI {
+    class ConsolaUi {
         -WebCrawler* crawler
-        +void start()
-        -void displayMenu()
-        -void handleInput()
-        -void promptForRootUrlAndDepth()
-        -void displayStats()
-        -void searchKeyword()
-        -void exportTree()
+        +ConsolaUi()
+        +~ConsolaUi()
+        +start()
+        -UrlValida(string) bool
+        -MostrarMenu()
+        -UrlyProfundidad()
+        -MostrarEstadisticas()
+        -BuscarPalabraClave()
+        -ExportarArbol()
+        -limpiarConsola()
+        -pausarConsola()
     }
 
-    class HTTPClient {
-        +static string downloadUrl(string url)
+    class main {
+        +main()
     }
 
-    class HTMLParser {
-        +static vector<string> extractLinks(string html, string baseUrl)
-    }
-
-    WebCrawler *-- TreeNode : Composition
-    WebCrawler *-- HashTable : Composition
-    WebCrawler --> Stats : Creates
-    WebCrawler --> FileExporter : Uses
-    WebCrawler --> HTTPClient : Uses
-    WebCrawler --> HTMLParser : Uses
-    ConsoleUI --> WebCrawler : Creates and Controlsv
+    WebCrawler --> NodoArbol : contiene
+    WebCrawler --> TablaHash : contiene
+    WebCrawler --> Http_client : usa
+    WebCrawler --> Html_parser : usa
+    WebCrawler --> Estadisticas : retorna
+    WebCrawler --> ExportarArchivo : usa
+    ConsolaUi --> WebCrawler : usa
+    main --> ConsolaUi : usa
+    ExportarArchivo --> NodoArbol : usa
 ```
+## Diagrama de secuencia
+
+```mermaid
+sequenceDiagram
+    participant Usuario
+    participant ConsolaUi
+    participant WebCrawler
+    participant Http_client
+    participant Html_parser
+    participant TablaHash
+    participant NodoArbol
+
+    Usuario->>ConsolaUi: Ingresa URL y profundidad
+    ConsolaUi->>WebCrawler: new(url, profundidad)
+    WebCrawler->>TablaHash: insertar(url)
+    loop Exploración recursiva
+        WebCrawler->>Http_client: dowladUrl(url)
+        Http_client-->>WebCrawler: HTML
+        WebCrawler->>Html_parser: extraerLinks(HTML)
+        Html_parser-->>WebCrawler: Lista de links
+        loop Para cada link
+            WebCrawler->>TablaHash: existe(link)?
+            TablaHash-->>WebCrawler: sí/no
+            alt Link nuevo
+                WebCrawler->>NodoArbol: new(link)
+                WebCrawler->>NodoArbol: insertar(nuevo)
+                WebCrawler->>TablaHash: insertar(link)
+            end
+        end
+    end
+    Usuario->>ConsolaUi: Selecciona "Buscar palabra"
+    ConsolaUi->>WebCrawler: PalabraClave("ejemplo")
+    WebCrawler->>NodoArbol: Buscar en contenido
+    NodoArbol-->>WebCrawler: Profundidad (3)
+    WebCrawler-->>ConsolaUi: 3
+    ConsolaUi->>Usuario: Muestra resultado
+```
+
