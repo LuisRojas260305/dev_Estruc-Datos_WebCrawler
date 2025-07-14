@@ -27,6 +27,7 @@ El programa es un Web Crawler que explora recursivamente sitios web desde una UR
 ## Funciones principales
 
 | Clase | Funcion clave | Descripción |
+|-----------------|---------------------|-----------------|
 | **WebCrawler** | ExploracionRecursiva() | Rastrea enlaces recursivamente y construye el árbol de navegación. |
 | **Http_client** | dowladUrl() | Descarga contenido HTML de una URL usando cURL. |
 | **Html_parser** | extraerLinks() | Extrae enlaces de HTML usando regex y convierte URLs relativas a absolutas. |
